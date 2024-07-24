@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -10,9 +10,8 @@ import RecentCourses from "./screen/RecentCourses";
 import AllCourses from "./screen/AllCourses";
 import ManageCourse from "./screen/ManageCourse";
 
-//icon için import ettik.
+//iconlar için import ettik.
 import { AntDesign } from "@expo/vector-icons";
-
 import { Feather } from "@expo/vector-icons";
 
 const Stack = createNativeStackNavigator();
@@ -22,9 +21,12 @@ const Tab = createBottomTabNavigator();
 export default function App() {
   //fonksiyon olarak tanımlıyoruz
   function CourseOverview() {
+
+    // tab navigatorün içindeyken başka bir sayfaya yönlendirme için navigation kullanılır.
+    //Daha sonra onu tıklama ile yönlerdirme işlemi yaparız. Bunu da Pressable içinde aşağıdaki şekilde kullanabilirz.)
     return (
       <Tab.Navigator
-        screenOptions={{
+        screenOptions={({ navigation }) => ({
           headerStyle: {
             backgroundColor: "pink",
           },
@@ -33,7 +35,19 @@ export default function App() {
             backgroundColor: "pink",
           },
           tabBarActiveTintColor: "darkblue",
-        }}
+          headerRight: () => (
+            <Pressable
+              style={({ pressed }) => pressed && styles.pressed}
+              onPress={() => {
+                navigation.navigate("ManageCourse");
+              }}
+            >
+              <View style={styles.iconContainer}>
+                <AntDesign name="plus" size={24} color="green" />
+              </View>
+            </Pressable>
+          ),
+        })}
       >
         <Tab.Screen
           name="RecentCourses"
@@ -61,6 +75,8 @@ export default function App() {
     );
   }
 
+
+  // Ana Ekranda ManageCourse sayfasından önce CourseOverview sayfasının içeriği gözükür. 
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -76,4 +92,13 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  pressed: {
+    opacity: 0.5,
+  },
+
+  iconContainer: {
+    marginHorizontal: 10,
+    marginVertical: 2,
+  },
+});
