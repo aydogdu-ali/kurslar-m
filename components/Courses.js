@@ -71,7 +71,9 @@ export default function Courses({ coursesPeriod }) {
 
 const styles = StyleSheet.create({
   container: {
+   
     paddingTop: 8,
     paddingHorizontal: 25,
+    
   },
 });
