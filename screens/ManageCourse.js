@@ -1,50 +1,44 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import React from "react";
-import { useLayoutEffect } from "react";
-import { AntDesign } from "@expo/vector-icons";
-import { useContext } from "react";
-import { CoursesContext } from "../store/coursesContext";
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { useLayoutEffect } from 'react';
+import { EvilIcons } from '@expo/vector-icons';
+import { useContext } from 'react';
+import { CoursesContext } from '../store/coursesContext';
 
 export default function ManageCourse({ route, navigation }) {
   const coursesContext = useContext(CoursesContext);
-
-  // props olarak ne yolladıysak o isimle yazarız.Bu örnekte courseId
   const courseId = route.params?.courseId;
-
   let isEditing = false;
 
   if (courseId) {
     isEditing = true;
   }
 
-  // Gidilecek yerde değişikliğin gitmeden görüntülenmesi için kullanıyoruz.
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: isEditing ? "Kursu Güncelle" : "Kurs Ekle",
+      title: isEditing ? 'Kursu Güncelle' : 'Kurs Ekle',
     });
   }, [navigation, isEditing]);
 
-  // silme fonksiyonu
-
-  const deleteCourse = () => {
+  function deleteCourse() {
     coursesContext.deleteCourse(courseId);
     navigation.goBack();
-  };
+  }
 
-  const cancelHandler = () => {
+  function cancelHandler() {
     navigation.goBack();
-  };
+  }
 
   function addOrUpdateHandler() {
     if (isEditing) {
       coursesContext.updateCourse(courseId, {
-        description: "Güncellenen Kurs",
+        description: 'Güncellenen Kurs',
         amount: 169,
         date: new Date(),
       });
     } else {
       coursesContext.addCourse({
-        description: "Eklenen Kurs",
+        description: 'Eklenen Kurs',
         amount: 169,
         date: new Date(),
       });
@@ -63,7 +57,7 @@ export default function ManageCourse({ route, navigation }) {
         <Pressable onPress={addOrUpdateHandler}>
           <View style={styles.addOrDelete}>
             <Text style={styles.addOrDeleteText}>
-              {isEditing ? "Güncelle" : "Ekle"}
+              {isEditing ? 'Güncelle' : 'Ekle'}
             </Text>
           </View>
         </Pressable>
@@ -71,9 +65,9 @@ export default function ManageCourse({ route, navigation }) {
 
       {isEditing && (
         <View style={styles.deleteContainer}>
-          <AntDesign
-            name="delete"
-            size={30}
+          <EvilIcons
+            name="trash"
+            size={36}
             color="black"
             onPress={deleteCourse}
           />
@@ -89,35 +83,34 @@ const styles = StyleSheet.create({
     padding: 25,
   },
   deleteContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     borderTopWidth: 2,
-    borderTopColor: "blue",
+    borderTopColor: 'blue',
     paddingTop: 10,
     marginTop: 16,
   },
   buttons: {
-    flexDirection: "row",
-    justifyContent: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   cancel: {
-    backgroundColor: "red",
+    backgroundColor: 'red',
     minWidth: 120,
     marginRight: 10,
     padding: 8,
-    alignItems: "center",
+    alignItems: 'center',
   },
   cancelText: {
-    color: "white",
+    color: 'white',
   },
-
   addOrDelete: {
-    backgroundColor: "blue",
+    backgroundColor: 'blue',
     minWidth: 120,
     marginRight: 10,
     padding: 8,
-    alignItems: "center",
+    alignItems: 'center',
   },
   addOrDeleteText: {
-    color: "white",
+    color: 'white',
   },
 });

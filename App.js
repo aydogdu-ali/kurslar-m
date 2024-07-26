@@ -13,6 +13,7 @@ import ManageCourse from "./screen/ManageCourse";
 //iconlar için import ettik.
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import CoursesContextProvider from "./store/coursesContext";
 
 const Stack = createNativeStackNavigator();
 
@@ -78,17 +79,19 @@ export default function App() {
 
   // Ana Ekranda ManageCourse sayfasından önce CourseOverview sayfasının içeriği gözükür. 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="CourseOverview"
-          component={CourseOverview}
-          //Bunu yaparak ekranada CourseOverview yazısını göstermeyiz.
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="ManageCourse" component={ManageCourse} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <CoursesContextProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="CourseOverview"
+            component={CourseOverview}
+            //Bunu yaparak ekranada CourseOverview yazısını göstermeyiz.
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="ManageCourse" component={ManageCourse} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </CoursesContextProvider>
   );
 }
 
